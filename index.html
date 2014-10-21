@@ -10,8 +10,19 @@
     .container {
       max-width: 800px;
       margin: 0 auto;
-      background-color: rgba(0,30,40,0.2);
+    }
+
+    .module {
       padding: 1rem;
+      background-color: rgba(0,30,40,0.2);
+    }
+
+    .module.bp-1 {
+      background-color: rgba(0,60,80,0.5);
+    }
+
+    .module.bp-2 {
+      background-color: rgba(0,60,80,0.9);
     }
   </style>
 </head>
@@ -24,7 +35,10 @@
 <div class="container">
   <h1>test</h1>
 
-  <div class="module" data-js-bp='{"300":"bp-1", "500":"bp-2"}'>
+  <div class="module" data-js-bp='{"700":"bp-1", "800":"bp-2"}'>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore quidem fugiat, illum harum quo sunt! Amet possimus, ut rem, illo sed totam mollitia ipsum dolorem porro repellendus dolores quidem iste accusamus quod cupiditate numquam deleniti suscipit, dolorum minima omnis? Error.</p>
+  </div>
+  <div class="module js-bp">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore quidem fugiat, illum harum quo sunt! Amet possimus, ut rem, illo sed totam mollitia ipsum dolorem porro repellendus dolores quidem iste accusamus quod cupiditate numquam deleniti suscipit, dolorum minima omnis? Error.</p>
   </div>
 </div>
@@ -32,8 +46,13 @@
 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/libs/smartresize.js"></script>
 <script src="js/rwd-module-bp.js"></script>
 <script>
   var bps = rwdModuleBp();
+
+  $(document).bind('resize-module.rwdModuleBp', function (event) {
+    console.log(event);
+  });
 </script>
 </html>
