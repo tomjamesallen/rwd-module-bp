@@ -1,4 +1,16 @@
-(function (window, $) {
+/* global jQuery */
+
+/*
+ * rwd-module-bp.js
+ *
+ * Copyright 2014, Tom Allen
+ *
+ * Lightweight js plugin add classes to element based on its width.
+ *
+ * Released under the WTFPL license - http://sam.zoy.org/wtfpl/
+ */
+
+;(function (window, $) {
  
   var plugin = function (options, initOnAssign) {
     var api = {}, op;
@@ -14,6 +26,7 @@
 
       moduleClass: 'js-bp',
 
+      // Default breakpoints.
       bps: {
         '300': 'bp-300',
         '500': 'bp-500',
@@ -114,6 +127,6 @@
   };
  
   // Name plugin here.
-  window.js_module_bp = plugin;
+  window.rwdModuleBp = plugin;
  
 })(window, jQuery);
