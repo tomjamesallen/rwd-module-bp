@@ -37,13 +37,15 @@
       background-color: rgba(0,60,80,0.9);
     }
 
-    .module .col {
+    .module>.col {
       float: left;
     }
 
-    .module.bp-1 .col {
+    .module.bp-1>.col {
       width: 50%;
     }
+
+
   </style>
 </head>
 <body>
@@ -61,6 +63,33 @@
     </div>
     <div class="col">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, est ullam eaque rerum! Sint nulla aliquam, hic perspiciatis et inventore.</p>
+      <!-- Nested module -->
+      <div class="module cf" data-js-bp='{"500":"bp-1", "800":"bp-2"}'>
+        <div class="col">
+          <h2>a title</h2>
+        </div>
+        <div class="col">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, est ullam eaque rerum! Sint nulla aliquam, hic perspiciatis et inventore.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="module cf" data-js-bp='{"700":"bp-1", "800":"bp-2"}'>
+    <div class="col">
+      <h2>a title</h2>
+    </div>
+    <div class="col">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, est ullam eaque rerum! Sint nulla aliquam, hic perspiciatis et inventore.</p>
+      <!-- Nested module -->
+      <div class="module cf" data-js-bp='{"500":"bp-1", "800":"bp-2"}'>
+        <div class="col">
+          <h2>a title</h2>
+        </div>
+        <div class="col">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, est ullam eaque rerum! Sint nulla aliquam, hic perspiciatis et inventore.</p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="module js-bp">
@@ -74,10 +103,17 @@
 <!-- <script src="js/libs/smartresize.js"></script> -->
 <script src="js/rwd-module-bp.js"></script>
 <script>
-  var bps = rwdModuleBp();
+  var bps = rwdModuleBp({
+    // bindWindowResize: false,
+  });
 
   $(document).bind('resize-module.rwdModuleBp', function (event) {
     console.log(event);
   });
+
+  
+  // $.event.trigger({
+  //   type: 'trigger-resize.rwdModuleBp',
+  // });
 </script>
 </html>

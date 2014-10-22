@@ -48,6 +48,9 @@
       // Whether the plugin should fire events on the updateClass function being
       // called.
       fireEvents: false,
+
+      // Whether bind update of classes to window resize.
+      bindWindowResize: true,
     };
  
     // Set options to empty object if not set.
@@ -84,6 +87,9 @@
       // Get the modules based on the selector.
       api._getModules();
 
+      // Sort modules by number of matching decedents.
+      api._sortModules();
+
       // Update the classes on the modules.
       api.updateClasses();
 
@@ -118,19 +124,47 @@
           bps = op.bps;
         }
 
+        // Cache module.
+        var $el = $(this);
+
+        // Calculate order to update modules in based on their depth in the DOM.
+        var matchingDecedents = $el.find(moduleSelector).length;
+
         // Create the module object.
         var module = {
           // Cache the jquery selector.
-          $el: $(this),
+          $el: $el,
 
           // Save the bps object.
           bps: bps,
+
+          // Matching decendents.
+          matchingDecedents: matchingDecedents,
         };
+
+        // Add ready class to module.
+        module.$el.addClass(op.moduleClass + '-ready');
 
         // Attach the module object to the modules array.
         api.modules.push(module);
       });
     }
+
+    /**
+     * Sort the modules array based on the number of matching decedents that
+     * each module has.
+     */
+    api._sortModules = function () {
+      api.modules.sort(function (a, b) {
+        if (a.matchingDecedents > b.matchingDecedents) {
+          return -1;
+        }
+        if (a.matchingDecedents < b.matchingDecedents) {
+          return 1;
+        }
+        return 0;
+      });
+    };
 
     /**
      * Update the classes on each module.
@@ -140,6 +174,7 @@
      * or layout of a page that might affect the a module's width.
      */
     api.updateClasses = function () {
+      
       // Loop through our modules.
       for (var i in api.modules) {
         
@@ -148,6 +183,7 @@
 
             // Get the outer width of our module's element.
             moduleWidth = $module.outerWidth(true);
+
 
         // Cycle through breakpoints.
         for (var size in module.bps) {
@@ -186,6 +222,9 @@
         var module = api.modules[i],
             $module = module.$el;
 
+        // Remove ready class from module.
+        module.$el.removeClass(op.moduleClass + '-ready');
+
         // Cycle through breakpoints.
         for (var size in module.bps) {
           var bpClass = module.bps[size];
@@ -213,16 +252,21 @@
      * Bind the resize events.
      */
     api.bindEvents = function () {
-      if (typeof $(window).smartresize === 'function') {
-        $(window).smartresize(function () {
-          api.updateClasses();
-        });
+      if (op.bindWindowResize) {
+        if (typeof $(window).smartresize === 'function') {
+          $(window).smartresize(function () {
+            api.updateClasses();
+          });
+        }
+        else {
+          $(window).resize(function () {
+            api.updateClasses();
+          });        
+        }
       }
-      else {
-        $(window).resize(function () {
-          api.updateClasses();
-        });        
-      }
+      $(document).bind('trigger-resize.rwdModuleBp', function (event) {
+        api.updateClasses();
+      });
     };
  
     // If initOnAssign is true of not set, then initialise the plugin.
